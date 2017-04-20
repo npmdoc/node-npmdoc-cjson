@@ -1,0 +1,564 @@
+<div class="apidocDiv">
+<style>
+/*csslint
+*/
+.apidocDiv {
+    background: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.apidocDiv a[href] {
+    color: #33f;
+    font-weight: bold;
+    text-decoration: none;
+}
+.apidocDiv a[href]:hover {
+    text-decoration: underline;
+}
+.apidocCodeCommentSpan {
+    background: #bbf;
+    color: #000;
+    display: block;
+}
+.apidocCodeKeywordSpan {
+    color: #d00;
+    font-weight: bold;
+}
+.apidocCodePre {
+    background: #eef;
+    border: 1px solid;
+    color: #777;
+    padding: 5px;
+    white-space: pre-wrap;
+}
+.apidocFooterDiv {
+    margin-top: 20px;
+    text-align: center;
+}
+.apidocModuleLi {
+    margin-top: 10px;
+}
+.apidocSectionDiv {
+    border-top: 1px solid;
+    margin-top: 20px;
+}
+.apidocSignatureSpan {
+    color: #777;
+    font-weight: bold;
+}
+</style>
+<h1>api documentation for
+    <a
+
+    >cjson (v0.5.0)</a>
+</h1>
+<h4>cjson - Commented JavaScript Object Notation. It is a json loader, which parses only valid json files, but with comments enabled. Useful for loading configs.</h4>
+<div class="apidocSectionDiv"><a
+    href="#apidoc.tableOfContents"
+    id="apidoc.tableOfContents"
+><h1>table of contents</h1></a><ol>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.cjson">module cjson</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.cjson.decomment">
+            function <span class="apidocSignatureSpan">cjson.</span>decomment
+            <span class="apidocSignatureSpan">(str)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.cjson.extend">
+            function <span class="apidocSignatureSpan">cjson.</span>extend
+            <span class="apidocSignatureSpan">(deep, obj1, obj2)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.cjson.freeze">
+            function <span class="apidocSignatureSpan">cjson.</span>freeze
+            <span class="apidocSignatureSpan">(obj)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.cjson.load">
+            function <span class="apidocSignatureSpan">cjson.</span>load
+            <span class="apidocSignatureSpan">(path, options)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.cjson.parse">
+            function <span class="apidocSignatureSpan">cjson.</span>parse
+            <span class="apidocSignatureSpan">(str, reviver)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.cjson.replace">
+            function <span class="apidocSignatureSpan">cjson.</span>replace
+            <span class="apidocSignatureSpan">(str, data)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <span class="apidocSignatureSpan">object <span class="apidocSignatureSpan">cjson.</span>options</span>
+
+        </li>
+
+    </ol></li>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.cjson.options">module cjson.options</a><ol>
+
+        <li>
+
+            <span class="apidocSignatureSpan">boolean <span class="apidocSignatureSpan">cjson.options.</span>freeze</span>
+
+        </li>
+
+        <li>
+
+            <span class="apidocSignatureSpan">boolean <span class="apidocSignatureSpan">cjson.options.</span>merge</span>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.cjson.options.parse">
+            function <span class="apidocSignatureSpan">cjson.options.</span>parse
+            <span class="apidocSignatureSpan">(text, reviver)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <span class="apidocSignatureSpan">object <span class="apidocSignatureSpan">cjson.options.</span>replace</span>
+
+        </li>
+
+        <li>
+
+            <span class="apidocSignatureSpan">string <span class="apidocSignatureSpan">cjson.options.</span>ext</span>
+
+        </li>
+
+    </ol></li>
+
+</ol></div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.cjson" id="apidoc.module.cjson">module cjson</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.cjson.decomment" id="apidoc.element.cjson.decomment">
+        function <span class="apidocSignatureSpan">cjson.</span>decomment
+        <span class="apidocSignatureSpan">(str)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">decomment = function (str) {
+    var i,
+        curChar, nextChar,
+        inString = false,
+        inComment = false,
+        newStr = &#x27;&#x27;;
+
+    for (i = 0; i &#x3c; str.length; ++i) {
+        curChar = str.charAt(i);
+        nextChar = str.charAt(i + 1);
+
+        // it&#x27;s either closing or opening inString and it is not escaped
+        if (!inComment &#x26;&#x26; curChar === &#x27;&#x22;&#x27; &#x26;&#x26; str.charAt(i - 1) !== &#x27;\\&#x27;) {
+            inString = !inString;
+        }
+
+        // we are not inside of a string
+        if (!inString) {
+            // singleline comment start
+            if (!inComment &#x26;&#x26; curChar + nextChar === &#x27;//&#x27;) {
+                ++i;
+                inComment = 1;
+            // singleline comment end
+            } else if (inComment === 1 &#x26;&#x26; curChar === &#x27;\n&#x27;) {
+                inComment = false;
+            // multiline comment start
+            } else if (!inComment &#x26;&#x26; curChar + nextChar === &#x27;/*&#x27;) {
+                ++i;
+                inComment = 2;
+                curChar = &#x27;&#x27;;
+            // multiline comment end
+            } else if (inComment === 2 &#x26;&#x26; curChar + nextChar === &#x27;*/&#x27;) {
+                ++i;
+                inComment = false;
+                curChar = &#x27;&#x27;;
+            }
+
+            if (inComment) {
+                curChar = &#x27;&#x27;;
+            }
+        }
+
+        newStr += curChar;
+    }
+
+
+    return newStr;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+*
+* @param {String} json.
+* @param {Function} [reviver] will be called for every key and value at every
+*     level of the final result.
+* @return {Object} parsed json object.
+*/
+exports.parse = function(str, reviver) {
+   return exports.options.parse(exports.<span class="apidocCodeKeywordSpan">decomment</span>(str), reviver);
+};
+
+/**
+* Replace templates with data. {{toReplace}}
+*
+* @param {String} json.
+* @param {Object} data data hash.
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.cjson.extend" id="apidoc.element.cjson.extend">
+        function <span class="apidocSignatureSpan">cjson.</span>extend
+        <span class="apidocSignatureSpan">(deep, obj1, obj2)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function extend(deep, obj1, obj2) {
+    // take first argument, if its not a boolean
+    var args = arguments,
+        i = deep === true ? 1 : 0,
+        key,
+        target = args[i];
+
+    for (++i; i &#x3c; args.length; ++i) {
+        for (key in args[i]) {
+            if (deep === true &#x26;&#x26;
+                target[key] &#x26;&#x26;
+                // if not doing this check you may end in
+                // endless loop if using deep option
+                toString.call(args[i][key]) === obj &#x26;&#x26;
+                toString.call(target[key]) === obj) {
+
+                // create a copy of target object to avoid subobjects changes
+                target[key] = extend(deep, {}, target[key]);
+
+                extend(deep, target[key], args[i][key]);
+            } else {
+                target[key] = args[i][key];
+            }
+        }
+    }
+
+    return target;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+exports.load = function load(path, options) {
+var data, paths, conf;
+
+if (options === true) {
+    options = {merge: true};
+}
+
+options = exports.<span class="apidocCodeKeywordSpan">extend</span>({}, exports.options, options);
+
+if (Array.isArray(path)) {
+    conf = {};
+    path.forEach(function(path) {
+        if (fs.existsSync(path)) {
+            var data = load(path, options),
+                filename;
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.cjson.freeze" id="apidoc.element.cjson.freeze">
+        function <span class="apidocSignatureSpan">cjson.</span>freeze
+        <span class="apidocSignatureSpan">(obj)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function freeze(obj) {
+    var key;
+
+    if (obj instanceof Object) {
+        for (key in obj) {
+            freeze(obj[key]);
+        }
+
+        Object.freeze(obj);
+    }
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+   var key;
+
+   if (obj instanceof Object) {
+       for (key in obj) {
+           freeze(obj[key]);
+       }
+
+       Object.<span class="apidocCodeKeywordSpan">freeze</span>(obj);
+   }
+};
+
+/**
+* Load and parse a config file/files.
+*
+* @param {String|Array} path absolute path/paths to the file/files or dir.
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.cjson.load" id="apidoc.element.cjson.load">
+        function <span class="apidocSignatureSpan">cjson.</span>load
+        <span class="apidocSignatureSpan">(path, options)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function load(path, options) {
+    var data, paths, conf;
+
+    if (options === true) {
+        options = {merge: true};
+    }
+
+    options = exports.extend({}, exports.options, options);
+
+    if (Array.isArray(path)) {
+        conf = {};
+        path.forEach(function(path) {
+            if (fs.existsSync(path)) {
+                var data = load(path, options),
+                    filename;
+
+                if (options.merge) {
+                    exports.extend(true, conf, data);
+                } else {
+                    filename = Path.basename(path, options.ext);
+                    conf[filename] = data;
+                }
+            }
+        });
+
+        return conf;
+    }
+
+    if (fs.statSync(path).isDirectory()) {
+        paths = [];
+        fs.readdirSync(path).forEach(function(filename) {
+            var file = Path.join(path, filename);
+
+            if (Path.extname(file) == options.ext &#x26;&#x26; fs.statSync(file).isFile()) {
+                paths.push(file);
+            }
+        });
+
+        return load(paths, options);
+    }
+
+    data = fs.readFileSync(path, &#x27;utf-8&#x27;);
+
+    // replace BOM Character
+    data = data.replace(/\ufeff/g, &#x27;&#x27;);
+
+    if (options.replace) {
+        data = exports.replace(data, options.replace);
+    }
+
+    try {
+        data = exports.parse(data);
+    } catch(err) {
+        err.message += &#x27;\nFile: &#x22;&#x27; + path + &#x27;&#x22;&#x27;;
+        throw err;
+    }
+
+    if (options.freeze) {
+        exports.freeze(data);
+    }
+
+    return data;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+```
+
+## API
+
+### load the module
+	var cjson = require(&#x27;cjson&#x27;);
+
+### cjson.<span class="apidocCodeKeywordSpan">load</span>(path, [options]);
+
+Load config file from given path, array of paths or directory. Second parameter is optional and can be a boolean or object.
+
+- `path` {String|Array} absolute path to the file, array of paths or directory
+- `options` {Boolean|Object} optional options. If you pass `true` as second param, its the same like `    {merge: true}` and will
+ merge all configs together.
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.cjson.parse" id="apidoc.element.cjson.parse">
+        function <span class="apidocSignatureSpan">cjson.</span>parse
+        <span class="apidocSignatureSpan">(str, reviver)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">parse = function (str, reviver) {
+    return exports.options.parse(exports.decomment(str), reviver);
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+*
+* @param {String} json.
+* @param {Function} [reviver] will be called for every key and value at every
+*     level of the final result.
+* @return {Object} parsed json object.
+*/
+exports.parse = function(str, reviver) {
+   return exports.options.<span class="apidocCodeKeywordSpan">parse</span>(exports.decomment(str), reviver);
+};
+
+/**
+* Replace templates with data. {{toReplace}}
+*
+* @param {String} json.
+* @param {Object} data data hash.
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.cjson.replace" id="apidoc.element.cjson.replace">
+        function <span class="apidocSignatureSpan">cjson.</span>replace
+        <span class="apidocSignatureSpan">(str, data)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">replace = function (str, data) {
+    return str.replace(/\{\{([^}]+)\}\}/g, function(match, search) {
+        if (data.hasOwnProperty(search)) {
+            // If the variable is an object, stringify it before replacement.
+            // The false positive of &#x22;null&#x22; is fine in this case.
+            if (typeof data[search] === &#x27;object&#x27;) {
+                return JSON.stringify(data[search]);
+            }
+            return data[search];
+        }
+        return match;
+    });
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+ * Replace templates with data. {{toReplace}}
+ *
+ * @param {String} json.
+ * @param {Object} data data hash.
+ * @return {String} json string with replaced data.
+ */
+exports.replace = function(str, data) {
+return str.<span class="apidocCodeKeywordSpan">replace</span>(/\{\{([^}]+)\}\}/g, function(match, search) {
+    if (data.hasOwnProperty(search)) {
+        // If the variable is an object, stringify it before replacement.
+        // The false positive of &#x22;null&#x22; is fine in this case.
+        if (typeof data[search] === &#x27;object&#x27;) {
+            return JSON.stringify(data[search]);
+        }
+        return data[search];
+...</pre></li>
+    </ul>
+
+
+
+
+</div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.cjson.options" id="apidoc.module.cjson.options">module cjson.options</a></h1>
+
+
+
+
+
+
+    <h2>
+        <a href="#apidoc.element.cjson.options.parse" id="apidoc.element.cjson.options.parse">
+        function <span class="apidocSignatureSpan">cjson.options.</span>parse
+        <span class="apidocSignatureSpan">(text, reviver)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function parse(text, reviver) {
+    try {
+        return JSON.parse(text, reviver);
+    } catch (err) {
+        // we expect this to throw with a more informative message
+        jju.parse(text, {
+            mode: &#x27;json&#x27;,
+            reviver: reviver
+        });
+
+        // backup if jju is not as strict as JSON.parse; re-throw error
+        // data-dependent code path, I do not know how to cover it
+        throw err;
+    }
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+*
+* @param {String} json.
+* @param {Function} [reviver] will be called for every key and value at every
+*     level of the final result.
+* @return {Object} parsed json object.
+*/
+exports.parse = function(str, reviver) {
+   return exports.options.<span class="apidocCodeKeywordSpan">parse</span>(exports.decomment(str), reviver);
+};
+
+/**
+* Replace templates with data. {{toReplace}}
+*
+* @param {String} json.
+* @param {Object} data data hash.
+...</pre></li>
+    </ul>
+
+
+
+
+
+
+</div>
+
+<div class="apidocFooterDiv">
+    [ this document was created with
+    <a href="https://github.com/kaizhu256/node-utility2" target="_blank">utility2</a>
+    ]
+</div>
+</div>
